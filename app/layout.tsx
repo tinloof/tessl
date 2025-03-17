@@ -1,5 +1,17 @@
 import type { Metadata } from "next";
+import { DM_Mono, Inter } from "next/font/google";
 import "./globals.css";
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+});
 
 // TODO: Update metadata
 export const metadata: Metadata = {
@@ -17,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={`${inter.variable} ${dmMono.variable}`}>{children}</body>
     </html>
   );
 }
