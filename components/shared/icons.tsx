@@ -14,6 +14,7 @@ const icons = {
   listWhite: "/icons/list-white.svg",
   rightArrowBlack: "/icons/right-arrow.svg",
   rightArrowWhite: "/icons/right-arrow-white.svg",
+  plusBlack: "/icons/plus-black.svg",
 
   spotify: "/social/spotify.svg",
   instagram: "/social/instagram.svg",
