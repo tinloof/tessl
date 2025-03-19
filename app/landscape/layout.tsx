@@ -25,7 +25,7 @@ export default function LandscapeLayout({
   const [activeTag, setActiveTag] = useState(tagsWithAll[0].id.toString());
 
   return (
-    <div className="px-12 max-w-[1440px] mx-auto flex flex-col gap-12">
+    <div className="px-12 max-w-[1440px] min-h-[calc(100vh-355px)] mx-auto flex flex-col gap-12 mb-12">
       <section className="flex justify-between w-full items-end">
         <div className="flex flex-col gap-6">
           <h1 className="text-[64px] tracking-[-1.28px]">Landscape</h1>
@@ -33,15 +33,17 @@ export default function LandscapeLayout({
             Your Guide to the AI Development Ecosystem
           </p>
         </div>
-        <div className="flex gap-12 items-end justify-end">
+        <div className="flex gap-12 items-start justify-end">
           {info.map((item) => (
             <div key={item.id} className="flex flex-col text-xs leading-[150%]">
               <div className="text-[#999999] ">{item.title}</div>
               <div>{item.description}</div>
-              <div className="flex gap-1 items-center">
-                <Icon name={item.icon as IconName} />
-                <div className="underline">{item.label}</div>
-              </div>
+              {item.label && (
+                <div className="flex gap-1 items-center">
+                  <Icon name={item.icon as IconName} />
+                  <div className="underline">{item.label}</div>
+                </div>
+              )}
             </div>
           ))}
         </div>
