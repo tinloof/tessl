@@ -28,91 +28,6 @@ export const navLinks = [
 ];
 
 // Footer
-export const footerLinks = [
-  {
-    id: 1,
-    title: "Pages",
-    links: [
-      {
-        id: 1,
-        label: "Home",
-        href: "/",
-      },
-      {
-        id: 2,
-        label: "About",
-        href: "/about",
-      },
-      {
-        id: 3,
-        label: "Blog",
-        href: "/blog",
-      },
-      {
-        id: 4,
-        label: "Contact",
-        href: "/contact",
-      },
-    ],
-  },
-  {
-    id: 1,
-    title: "Marketing",
-    links: [
-      {
-        id: 1,
-        label: "Careers",
-        href: "/careers",
-      },
-      {
-        id: 2,
-        label: "Brand",
-        href: "/brand",
-      },
-      {
-        id: 3,
-        label: "Contributors",
-        href: "/contributors",
-      },
-      {
-        id: 4,
-        label: "Contact Sales",
-        href: "/contact-sales",
-      },
-      {
-        id: 5,
-        label: "Writers Guidelines",
-        href: "/writers-guidelines",
-      },
-    ],
-  },
-  {
-    id: 1,
-    title: "Resources",
-    links: [
-      {
-        id: 1,
-        label: "AI native dev con",
-        href: "/",
-      },
-      {
-        id: 2,
-        label: "AI Native Landscape",
-        href: "/ai-native-landscape",
-      },
-      {
-        id: 3,
-        label: "Press Kit",
-        href: "/press-kit",
-      },
-      {
-        id: 4,
-        label: "Media Pack",
-        href: "/media-pack",
-      },
-    ],
-  },
-];
 
 export const footerSocialLinks = [
   {
@@ -171,8 +86,6 @@ export const info = [
     id: 2,
     title: "Last updated",
     description: "9:36am CET Yesterday",
-    label: "Download",
-    icon: "downloadBlack",
   },
 ];
 
