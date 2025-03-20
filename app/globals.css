@@ -10,24 +10,56 @@
 
   --font-inter: var(--font-inter);
   --font-dm-mono: var(--font-dm-mono);
+  --font-instrument-sans: var(--font-instrument-sans);
+  --font-instrument-serif: var(--font-instrument-serif);
 }
 
 
 /* typography utilities */
+@utility menuItem {
+  @apply font-instrument-sans text-sm font-normal leading-[130%];
+}
+
+@utility heading {
+  @apply font-instrument-serif text-[64px] font-normal leading-[110%] tracking-[-1.28px];
+}
+
+@utility heading-2xl {
+  @apply font-instrument-sans text-[30px] font-normal leading-[110%] tracking-[-0.6px];
+}
+
+@utility heading-xl {
+  @apply font-inter text-[20px] font-normal leading-[110%] tracking-[-0.4px];
+}
+
+@utility body {
+  @apply font-dm-mono font-normal leading-[150%];
+}
+@utility body-sm {
+  @apply font-dm-mono text-sm font-normal leading-[150%];
+}
+
+@utility label {
+  @apply font-dm-mono text-sm font-normal leading-[130%] ;
+}
+
+@utility label-sm {
+  @apply font-instrument-sans text-sm font-normal leading-[130%];
+}
+
 @utility body-xs {
   @apply  text-xs leading-[120%] tracking-[0.1em];
 }
 
-@utility body-sm {
-  @apply font-inter text-sm leading-[130%];
-}
 
 @utility body-lg {
   @apply font-inter text-base leading-[150%];
 }
 
 
+
 body {
+  overscroll-behavior: none;
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: Arial, Helvetica, sans-serif;
