@@ -166,19 +166,19 @@ export const Tabs = [
   {
     id: "landscape",
     name: "Grid",
-    href: "/landscape",
+    href: "/",
     icon: "grid",
   },
   {
     id: "catalog",
     name: "Catalog",
-    href: "/landscape/catalog",
+    href: "/catalog",
     icon: "catalog",
   },
   {
     id: "list",
     name: "List",
-    href: "/landscape/list",
+    href: "/list",
     icon: "list",
   },
 ];

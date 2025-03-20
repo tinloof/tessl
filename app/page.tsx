@@ -1,11 +1,19 @@
-import Link from "next/link";
+"use client";
+
+import GridCard from "@/components/shared/cards/grid-card";
+import { useLandscapeContext } from "@/components/globale/globale-layout";
+
 export default function Home() {
+  const { toolsData } = useLandscapeContext();
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      Tessl Landscape
-      <Link href="/landscape" className="underline">
-        go to Landscape
-      </Link>
-    </div>
+    <section className="border border-[#C9C3B9] rounded-lg">
+      {toolsData?.domains.map((item) => (
+        <GridCard
+          key={item.name}
+          categories={item.categories}
+          title={item.name}
+        />
+      ))}
+    </section>
   );
 }

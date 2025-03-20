@@ -31,7 +31,7 @@ export function useLandscapeContext() {
   return context;
 }
 
-export default function LandscapeLayout({
+export default function GlobalLayout({
   children,
 }: {
   children: React.ReactNode;

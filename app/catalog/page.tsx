@@ -1,6 +1,6 @@
 "use client";
 import CatalogCard from "@/components/shared/cards/catalog-car";
-import { useLandscapeContext } from "../layout";
+import { useLandscapeContext } from "@/components/globale/globale-layout";
 
 export default function Catalog() {
   const { toolsData, activeTags } = useLandscapeContext();

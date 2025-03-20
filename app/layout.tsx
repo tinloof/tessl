@@ -8,6 +8,7 @@ import {
 import "./globals.css";
 import Header from "@/components/globale/header";
 import Footer from "@/components/globale/footer";
+import GlobalLayout from "@/components/globale/globale-layout";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -52,7 +53,7 @@ export default function RootLayout({
         className={`${inter.variable} ${dmMono.variable} ${instrumentSans.variable} ${instrumentSerif.variable}`}
       >
         <Header />
-        {children}
+        <GlobalLayout>{children}</GlobalLayout>
         <Footer />
       </body>
     </html>

@@ -1,4 +1,6 @@
-import { useLandscapeContext } from "@/app/landscape/layout";
+"use client";
+
+import { useLandscapeContext } from "@/components/globale/globale-layout";
 import { Icon } from "../icons";
 import { ToolsData } from "@/type/tools-type";
 import { cx } from "cva";
