@@ -1,6 +1,7 @@
 import React from "react";
 import Logo from "./logo";
 import { navLinks } from "../../../constant/moc-data";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -10,7 +11,7 @@ export default function Header() {
         <ul className="menuItem flex items-center justify-center gap-4">
           {navLinks.map((link) => (
             <li key={link.id} className="hover:underline">
-              <a href={link.href}>{link.label}</a>
+              <Link href={link.href}>{link.label}</Link>
             </li>
           ))}
         </ul>

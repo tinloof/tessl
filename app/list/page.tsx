@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/shared/table";
+import Link from "next/link";
 
 export default function LandscapeList() {
   const { toolsData, activeTags } = useGlobaleContext();
@@ -47,7 +48,7 @@ export default function LandscapeList() {
                 <TableCell>{domain.name}</TableCell>
                 <TableCell>{category.name}</TableCell>
                 <TableCell>
-                  <a
+                  <Link
                     href={tool.website_url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -55,7 +56,7 @@ export default function LandscapeList() {
                     {tool.website_url
                       .replace(/^https?:\/\//, "")
                       .replace(/^www\./, "")}
-                  </a>
+                  </Link>
                 </TableCell>
                 <TableCell>
                   <div className="uppercase text-xs w-fit font-dm-mono font-medium leading-[130%] text-[#F4EEE2] bg-[#F45757] py-1 px-2.5 rounded-2xl">

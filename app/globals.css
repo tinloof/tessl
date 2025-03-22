@@ -66,5 +66,4 @@ body {
   overscroll-behavior: none;
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }

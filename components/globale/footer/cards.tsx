@@ -20,6 +20,7 @@ export default function Cards({
         "flex flex-col items-start gap-16 justify-between relative flex-1   py-12 px-10 rounded-[5px]",
         {
           "text-white": variant === "discord",
+          "text-black": variant === "newsletter",
         }
       )}
       style={{

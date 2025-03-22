@@ -1,21 +1,47 @@
-import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+"use client";
 
-export default function Search() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(
-    searchParams ? searchParams.get("search") || "" : ""
-  );
+import type React from "react";
+import { useState, useEffect } from "react";
+
+interface SearchProps {
+  onSearch: (value: string) => void;
+  initialValue?: string;
+}
+
+export default function Search({ onSearch, initialValue = "" }: SearchProps) {
+  const [searchQuery, setSearchQuery] = useState(initialValue);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Only run client-side code after mount
+  useEffect(() => {
+    setIsMounted(true);
+
+    // Initialize search query from URL if available
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const search = urlParams.get("search") || "";
+      setSearchQuery(search);
+    }
+  }, []);
+
+  // Update when initialValue changes (from parent)
+  useEffect(() => {
+    if (initialValue !== searchQuery) {
+      setSearchQuery(initialValue);
+    }
+  }, [initialValue]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
 
-    // Only run on client side
-    if (typeof window !== "undefined") {
+    // Call the parent's onSearch handler
+    onSearch(value);
+
+    // Only update URL on client side
+    if (isMounted && typeof window !== "undefined") {
       // Create new URLSearchParams object
-      const params = new URLSearchParams(searchParams?.toString() || "");
+      const params = new URLSearchParams(window.location.search);
 
       // Update or remove the search parameter
       if (value) {
@@ -24,9 +50,9 @@ export default function Search() {
         params.delete("search");
       }
 
-      // Update the URL with the new search parameter
-      const newUrl = `?${params.toString()}`;
-      router.push(newUrl);
+      // Update the URL without a full page refresh
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.pushState({ path: newUrl }, "", newUrl);
     }
   };
 
@@ -36,7 +62,7 @@ export default function Search() {
       placeholder="Search..."
       value={searchQuery}
       onChange={handleSearch}
-      className="w-full p-2 border rounded-md"
+      className="w-full py-2 px-4 border outline-none border-black rounded-full"
     />
   );
 }

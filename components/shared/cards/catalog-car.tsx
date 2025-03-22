@@ -10,17 +10,19 @@ export default function CatalogCard({ tool }: { tool: Tool }) {
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-6">
             {tool.icon_url ? (
-              <img
-                src={tool.icon_url}
-                alt={tool.name}
-                className="w-14 h-14 object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  const div = document.createElement("div");
-                  div.className = "w-14 h-14 bg-gray-300";
-                  target.parentNode?.replaceChild(div, target);
-                }}
-              />
+              <Link href={tool.website_url} target="_blank">
+                <img
+                  src={tool.icon_url}
+                  alt={tool.name}
+                  className="w-14 h-14 object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    const div = document.createElement("div");
+                    div.className = "w-14 h-14 bg-gray-300";
+                    target.parentNode?.replaceChild(div, target);
+                  }}
+                />
+              </Link>
             ) : (
               <div className="w-14 h-14 bg-gray-300" />
             )}
@@ -64,15 +66,26 @@ export default function CatalogCard({ tool }: { tool: Tool }) {
             </div>
           )}
         </div>
-        <Button variant="primary" className="w-fit mt-6">
-          <Link
-            href={tool.website_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View website
-          </Link>
-        </Button>
+        <div className="flex gap-4">
+          <Button variant="primary" className="w-fit mt-6">
+            <Link
+              href={tool.website_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View website
+            </Link>
+          </Button>
+          <Button variant="secondary" className="w-fit mt-6">
+            <Link
+              href={tool.website_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Update
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

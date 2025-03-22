@@ -1,17 +1,19 @@
 "use client";
 
-import { Icon, IconName } from "@/components/shared/icons";
+import type React from "react";
+
+import { Icon, type IconName } from "@/components/shared/icons";
 import Tags from "@/components/shared/tags";
 import { info, Tabs } from "@/constant/moc-data";
 import initialToolsData from "@/public/tools-data.json";
-import { ToolsData } from "@/type/tools-type";
+import type { ToolsData } from "@/type/tools-type";
 import { cx } from "cva";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Search from "../shared/search";
 import { getConsistentColor } from "@/util/get-consistent-color";
-import { GlobaleContext, GlobaleContextType } from "./globale-context";
+import { GlobaleContext, type GlobaleContextType } from "./globale-context";
 
 export default function GlobalLayout({
   children,
@@ -19,16 +21,29 @@ export default function GlobalLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const searchTerm = useSearchParams().get("search");
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [data, setData] = useState<ToolsData>(
     initialToolsData as unknown as ToolsData
   );
   const [activeTags, setActiveTags] = useState(["all"]);
+  const [isMounted, setIsMounted] = useState(false);
 
+  // Client-side only code
+  useEffect(() => {
+    setIsMounted(true);
+
+    // Get search param from URL on initial load
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const search = urlParams.get("search") || "";
+      setSearchTerm(search);
+    }
+  }, []);
+
+  // Handle search term changes
   useEffect(() => {
     const fetchData = async () => {
-      if (searchTerm) {
+      if (searchTerm && isMounted) {
         try {
           const response = await fetch("/tools-data.json");
           const newData = await response.json();
@@ -40,7 +55,12 @@ export default function GlobalLayout({
     };
 
     fetchData();
-  }, [searchTerm]);
+  }, [searchTerm, isMounted]);
+
+  // Update search handler to be passed to Search component
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+  };
 
   const uniqueTags = data?.domains
     .flatMap((domain) => domain.categories)
@@ -108,6 +128,7 @@ export default function GlobalLayout({
             .filter((domain) => domain.categories.length > 0) || [],
       }
     : data;
+
   const contextValue: GlobaleContextType = {
     activeTags,
     toolsData: filteredData,
@@ -136,7 +157,7 @@ export default function GlobalLayout({
         </div>
       </section>
       <section className="flex justify-between w-full items-end gap-12">
-        <div className=" w-full flex gap-1 flex-wrap items-center justify-start">
+        <div className="w-full flex gap-1 flex-wrap items-center justify-start">
           {tagsWithAll.map((tag) => (
             <Tags
               key={tag.id}
@@ -147,8 +168,10 @@ export default function GlobalLayout({
             />
           ))}
         </div>
-        <div className="flex shrink-0  flex-col justify-between gap-2 items-center">
-          <Search />
+        <div className="flex shrink-0 flex-col justify-between gap-2 items-center">
+          {(pathname === "/catalog" || pathname === "/list") && (
+            <Search onSearch={handleSearch} initialValue={searchTerm} />
+          )}
           <div className="rounded-[64px] border border-black flex items-center overflow-hidden">
             {Tabs.map((tab) => (
               <Link
@@ -163,12 +186,9 @@ export default function GlobalLayout({
               >
                 <Icon
                   name={
-                    `${tab.icon}${
-                      pathname === tab.href ? "White" : "Black"
-                    }` as IconName
+                    `${tab.icon}${pathname === tab.href ? "White" : "Black"}` as IconName
                   }
                 />
-
                 <p className="label-sm">{tab.name}</p>
               </Link>
             ))}
