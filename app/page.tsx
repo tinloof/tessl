@@ -1,10 +1,10 @@
 "use client";
 
 import GridCard from "@/components/shared/cards/grid-card";
-import { useLandscapeContext } from "@/components/globale/globale-layout";
+import { useGlobaleContext } from "@/components/globale/globale-context";
 
 export default function Home() {
-  const { toolsData } = useLandscapeContext();
+  const { toolsData } = useGlobaleContext();
   return (
     <section className="border border-[#C9C3B9] rounded-lg">
       {toolsData?.domains.map((item) => (

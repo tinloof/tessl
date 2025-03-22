@@ -1,6 +1,6 @@
 "use client";
 
-import { useLandscapeContext } from "@/components/globale/globale-layout";
+import { useGlobaleContext } from "@/components/globale/globale-context";
 import { Icon } from "../icons";
 import { ToolsData } from "@/type/tools-type";
 import { cx } from "cva";
@@ -13,7 +13,7 @@ export default function GridCard({
   categories: ToolsData["domains"][0]["categories"];
   title: string;
 }) {
-  const { activeTags } = useLandscapeContext();
+  const { activeTags } = useGlobaleContext();
   const [expanded, setExpanded] = useState(false);
 
   return (

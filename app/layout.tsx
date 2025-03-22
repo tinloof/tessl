@@ -39,9 +39,6 @@ export const metadata: Metadata = {
   description: "Tessl Landscape",
 };
 
-// TODO: To make sure we have a static layout will be removed once we finish
-export const dynamic = "error";
-
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -3,33 +3,15 @@
 import { Icon, IconName } from "@/components/shared/icons";
 import Tags from "@/components/shared/tags";
 import { info, Tabs } from "@/constant/moc-data";
+import initialToolsData from "@/public/tools-data.json";
 import { ToolsData } from "@/type/tools-type";
 import { cx } from "cva";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { createContext, useContext, useState } from "react";
-import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
-
-type LandscapeContextType = {
-  activeTags: string[];
-  toolsData: ToolsData | undefined;
-};
-
-export const LandscapeContext = createContext<LandscapeContextType | undefined>(
-  undefined
-);
-
-export function useLandscapeContext() {
-  const context = useContext(LandscapeContext);
-  if (context === undefined) {
-    throw new Error(
-      "useLandscapeContext must be used within a LandscapeProvider"
-    );
-  }
-  return context;
-}
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import Search from "../shared/search";
+import { getConsistentColor } from "@/util/get-consistent-color";
+import { GlobaleContext, GlobaleContextType } from "./globale-context";
 
 export default function GlobalLayout({
   children,
@@ -37,7 +19,28 @@ export default function GlobalLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { data } = useSWR<ToolsData>("/tools-data.json", fetcher);
+  const searchTerm = useSearchParams().get("search");
+
+  const [data, setData] = useState<ToolsData>(
+    initialToolsData as unknown as ToolsData
+  );
+  const [activeTags, setActiveTags] = useState(["all"]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (searchTerm) {
+        try {
+          const response = await fetch("/tools-data.json");
+          const newData = await response.json();
+          setData(newData);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [searchTerm]);
 
   const uniqueTags = data?.domains
     .flatMap((domain) => domain.categories)
@@ -47,7 +50,7 @@ export default function GlobalLayout({
     .map((name) => ({
       id: name,
       name: name,
-      color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+      color: getConsistentColor(name),
     }));
 
   const tagsWithAll = [
@@ -59,7 +62,6 @@ export default function GlobalLayout({
     ...(uniqueTags || []),
   ];
 
-  const [activeTags, setActiveTags] = useState([tagsWithAll[0].id.toString()]);
   const handleTagClick = (tagId: string) => {
     if (tagId === "all") {
       setActiveTags(["all"]);
@@ -77,9 +79,38 @@ export default function GlobalLayout({
       }
     });
   };
-  const contextValue: LandscapeContextType = {
+
+  const filteredData = searchTerm
+    ? {
+        ...data,
+        domains:
+          data?.domains
+            .map((domain) => ({
+              ...domain,
+              categories: domain.categories
+                .map((category) => ({
+                  ...category,
+                  tools: category.tools.filter(
+                    (tool) =>
+                      tool.name
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) ||
+                      tool.description
+                        ?.toLowerCase()
+                        .includes(searchTerm.toLowerCase()) ||
+                      tool.tags?.some((tag) =>
+                        tag.toLowerCase().includes(searchTerm.toLowerCase())
+                      )
+                  ),
+                }))
+                .filter((category) => category.tools.length > 0),
+            }))
+            .filter((domain) => domain.categories.length > 0) || [],
+      }
+    : data;
+  const contextValue: GlobaleContextType = {
     activeTags,
-    toolsData: data,
+    toolsData: filteredData,
   };
 
   return (
@@ -116,34 +147,37 @@ export default function GlobalLayout({
             />
           ))}
         </div>
-        <div className="rounded-[64px] shrink-0 border border-black flex items-center overflow-hidden">
-          {Tabs.map((tab) => (
-            <Link
-              key={tab.id}
-              href={tab.href}
-              className={cx(
-                "flex items-center gap-1 px-4 py-2 nth-[2]:border-x transition-all duration-300 border-black",
-                {
-                  "bg-black text-white": pathname === tab.href,
-                }
-              )}
-            >
-              <Icon
-                name={
-                  `${tab.icon}${
-                    pathname === tab.href ? "White" : "Black"
-                  }` as IconName
-                }
-              />
+        <div className="flex shrink-0  flex-col justify-between gap-2 items-center">
+          <Search />
+          <div className="rounded-[64px] border border-black flex items-center overflow-hidden">
+            {Tabs.map((tab) => (
+              <Link
+                key={tab.id}
+                href={tab.href}
+                className={cx(
+                  "flex items-center gap-1 px-4 py-2 nth-[2]:border-x transition-all duration-300 border-black",
+                  {
+                    "bg-black text-white": pathname === tab.href,
+                  }
+                )}
+              >
+                <Icon
+                  name={
+                    `${tab.icon}${
+                      pathname === tab.href ? "White" : "Black"
+                    }` as IconName
+                  }
+                />
 
-              <p className="label-sm">{tab.name}</p>
-            </Link>
-          ))}
+                <p className="label-sm">{tab.name}</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
-      <LandscapeContext.Provider value={contextValue}>
+      <GlobaleContext.Provider value={contextValue}>
         {children}
-      </LandscapeContext.Provider>
+      </GlobaleContext.Provider>
     </div>
   );
 }

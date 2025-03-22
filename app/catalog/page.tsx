@@ -1,9 +1,9 @@
 "use client";
 import CatalogCard from "@/components/shared/cards/catalog-car";
-import { useLandscapeContext } from "@/components/globale/globale-layout";
+import { useGlobaleContext } from "@/components/globale/globale-context";
 
 export default function Catalog() {
-  const { toolsData, activeTags } = useLandscapeContext();
+  const { toolsData, activeTags } = useGlobaleContext();
 
   return (
     <div className="grid grid-cols-3 gap-px border border-[#C9C3B9] rounded-lg overflow-hidden">
