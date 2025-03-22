@@ -135,28 +135,32 @@ export default function GlobalLayout({
   };
 
   return (
-    <div className="max-w-[1240px] min-h-[calc(100vh-355px)] mx-auto flex flex-col gap-12 my-12">
-      <section className="flex justify-between w-full items-end">
-        <div className="flex flex-col gap-6">
+    <div className="max-w-[1240px] min-h-[calc(100vh-355px)] mx-auto flex flex-col gap-12 my-6 lg:my-12">
+      <section className="flex flex-col lg:flex-row justify-between w-full  px-4 lg:px-0 gap-10 lg:gap-0 lg:items-end">
+        <div className="flex flex-col gap-4 lg:gap-6 ">
           <h1 className="heading">Landscape</h1>
-          <p className="body">Your Guide to the AI Development Ecosystem</p>
+          <p className="body-sm lg:body">
+            Your Guide to the AI Development Ecosystem
+          </p>
         </div>
-        <div className="flex gap-12 items-start justify-end">
+        <div className="flex gap-12 items-start justify-between lg:justify-end ">
           {info.map((item) => (
             <div key={item.id} className="body-sm">
-              <div className="text-[#999999] ">{item.title}</div>
+              <div className="text-[#999999]">{item.title}</div>
               <div>{item.description}</div>
               {item.label && (
                 <div className="flex gap-1 items-center">
                   <Icon name={item.icon as IconName} />
-                  <div className="underline">{item.label}</div>
+                  <Link href={"/"} className="underline">
+                    {item.label}
+                  </Link>
                 </div>
               )}
             </div>
           ))}
         </div>
       </section>
-      <section className="flex justify-between w-full items-end gap-12">
+      <section className="hidden lg:flex justify-between w-full items-end gap-12">
         <div className="w-full flex gap-1 flex-wrap items-center justify-start">
           {tagsWithAll.map((tag) => (
             <Tags

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function CatalogCard({ tool }: { tool: Tool }) {
   return (
-    <div className="outline outline-[#C9C3B9] p-6">
+    <div className="outline outline-[#C9C3B9] p-6 rounded-lg lg:rounded-none">
       <div className="w-full h-[427px] flex flex-col justify-between">
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-6">
@@ -67,7 +67,7 @@ export default function CatalogCard({ tool }: { tool: Tool }) {
           )}
         </div>
         <div className="flex gap-4">
-          <Button variant="primary" className="w-fit mt-6">
+          <Button variant="primary" className="w-fit mt-6" linkIcon>
             <Link
               href={tool.website_url}
               target="_blank"
@@ -76,7 +76,7 @@ export default function CatalogCard({ tool }: { tool: Tool }) {
               View website
             </Link>
           </Button>
-          <Button variant="secondary" className="w-fit mt-6">
+          <Button variant="secondary" className="w-fit mt-6" arrow="black">
             <Link
               href={tool.website_url}
               target="_blank"

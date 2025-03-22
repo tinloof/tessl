@@ -1,8 +1,9 @@
 import { cva, type VariantProps } from "cva";
 import { forwardRef } from "react";
+import { Icon } from "./icons";
 
 const buttonVariants = cva(
-  "flex items-center cursor-pointer outline-none border border-black justify-center rounded-full",
+  "flex items-center gap-2 cursor-pointer outline-none border border-black justify-center rounded-full",
   {
     variants: {
       variant: {
@@ -25,10 +26,25 @@ const buttonVariants = cva(
 );
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
-  VariantProps<typeof buttonVariants>;
+  VariantProps<typeof buttonVariants> & {
+    linkIcon?: boolean;
+    arrow?: "black" | "white" | null;
+  };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, fullWidth, size, children, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      fullWidth,
+      size,
+      children,
+      arrow = null,
+      linkIcon,
+      ...props
+    },
+    ref
+  ) => {
     return (
       <button
         ref={ref}
@@ -36,6 +52,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {children}
+        {linkIcon && <Icon name="linkWhite" className="size-4" />}
+        {arrow && (
+          <Icon
+            name={arrow === "black" ? "arrowBlack" : "arrowWhite"}
+            className="size-4"
+          />
+        )}
       </button>
     );
   }

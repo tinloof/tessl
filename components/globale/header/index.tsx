@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className=" items-center justify-between pt-9 body-sm max-w-[1240px] mx-auto hidden lg:flex">
+    <header className=" items-center justify-between lg:p-0 lg:pt-9 p-4  body-sm max-w-[1240px] mx-auto flex">
       <Logo />
-      <div className="flex items-center justify-end gap-4">
+      <div className=" items-center justify-end gap-4 hidden lg:flex">
         <ul className="menuItem flex items-center justify-center gap-4">
           {navLinks.map((link) => (
             <li key={link.id} className="hover:underline">

@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { useState, useEffect } from "react";
+import { Icon } from "./icons";
 
 interface SearchProps {
   onSearch: (value: string) => void;
@@ -57,12 +58,18 @@ export default function Search({ onSearch, initialValue = "" }: SearchProps) {
   };
 
   return (
-    <input
-      type="text"
-      placeholder="Search..."
-      value={searchQuery}
-      onChange={handleSearch}
-      className="w-full py-2 px-4 border outline-none border-black rounded-full"
-    />
+    <div className="relative border border-black w-full rounded-full overflow-hidden px-4">
+      <Icon
+        name="searchBlack"
+        className="size-4 absolute left-4 top-1/2 -translate-y-1/2"
+      />
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={handleSearch}
+        className="w-full py-2 label-sm  outline-none pl-6"
+      />
+    </div>
   );
 }
