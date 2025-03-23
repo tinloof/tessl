@@ -6,7 +6,7 @@ import { useGlobaleContext } from "@/components/globale/globale-context";
 export default function Home() {
   const { toolsData } = useGlobaleContext();
   return (
-    <section className="border border-[#C9C3B9] rounded-lg p-4 lg:p-0">
+    <section className="lg:border border-[#C9C3B9] rounded-lg p-4 lg:p-0 ">
       {toolsData?.domains.map((item) => (
         <GridCard
           key={item.name}

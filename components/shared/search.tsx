@@ -21,11 +21,9 @@ export default function Search({
   const [searchQuery, setSearchQuery] = useState(initialValue);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Only run client-side code after mount
   useEffect(() => {
     setIsMounted(true);
 
-    // Initialize search query from URL if available
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
       const search = urlParams.get("search") || "";
@@ -33,7 +31,6 @@ export default function Search({
     }
   }, []);
 
-  // Update when initialValue changes (from parent)
   useEffect(() => {
     if (initialValue !== searchQuery) {
       setSearchQuery(initialValue);
@@ -44,22 +41,17 @@ export default function Search({
     const value = e.target.value;
     setSearchQuery(value);
 
-    // Call the parent's onSearch handler
     onSearch(value);
 
-    // Only update URL on client side
     if (isMounted && typeof window !== "undefined") {
-      // Create new URLSearchParams object
       const params = new URLSearchParams(window.location.search);
 
-      // Update or remove the search parameter
       if (value) {
         params.set("search", value);
       } else {
         params.delete("search");
       }
 
-      // Update the URL without a full page refresh
       const newUrl = `${window.location.pathname}?${params.toString()}`;
       window.history.pushState({ path: newUrl }, "", newUrl);
     }
@@ -114,10 +106,21 @@ export default function Search({
             )}
           />
           <button
-            className={cx("transition-all delay-75 duration-300", {
+            className={cx("transition-all duration-300", {
               "opacity-0": !isSearchOpen,
             })}
             onClick={() => {
+              setSearchQuery("");
+
+              onSearch("");
+
+              if (typeof window !== "undefined") {
+                const params = new URLSearchParams(window.location.search);
+                params.delete("search");
+                const newUrl = `${window.location.pathname}?${params.toString()}`;
+                window.history.pushState({ path: newUrl }, "", newUrl);
+              }
+
               setIsSearchOpen?.(false);
             }}
           >
