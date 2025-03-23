@@ -18,6 +18,8 @@ const icons = {
   arrowWhite: "/icons/arrow-white.svg",
   linkWhite: "/icons/link-white.svg",
   arrowBlack: "/icons/arrow-black.svg",
+  chevronBWhite: "/icons/chevron-b-white.svg",
+  closeWhite: "/icons/close-white.svg",
 
   spotify: "/social/spotify.svg",
   instagram: "/social/instagram.svg",

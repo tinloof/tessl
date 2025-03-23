@@ -4,7 +4,7 @@ import type React from "react";
 
 import { Icon, type IconName } from "@/components/shared/icons";
 import Tags from "@/components/shared/tags";
-import { info, Tabs } from "@/constant/moc-data";
+import { info } from "@/constant/moc-data";
 import initialToolsData from "@/public/tools-data.json";
 import type { ToolsData } from "@/type/tools-type";
 import { cx } from "cva";
@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import Search from "../shared/search";
 import { getConsistentColor } from "@/util/get-consistent-color";
 import { GlobaleContext, type GlobaleContextType } from "./globale-context";
+import MobileDrawer from "../shared/mobile-drawer";
+import TabSelector from "../shared/tab-selector";
 
 export default function GlobalLayout({
   children,
@@ -27,6 +29,7 @@ export default function GlobalLayout({
   );
   const [activeTags, setActiveTags] = useState(["all"]);
   const [isMounted, setIsMounted] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Client-side only code
   useEffect(() => {
@@ -134,9 +137,10 @@ export default function GlobalLayout({
     toolsData: filteredData,
   };
 
+  const numberActiveTags = activeTags.length;
   return (
-    <div className="max-w-[1240px] min-h-[calc(100vh-355px)] mx-auto flex flex-col gap-12 my-6 lg:my-12">
-      <section className="flex flex-col lg:flex-row justify-between w-full  px-4 lg:px-0 gap-10 lg:gap-0 lg:items-end">
+    <div className="max-w-[1240px] min-h-[calc(100vh-355px)] mx-auto flex flex-col gap-4 lg:gap-12 my-6 lg:my-12">
+      <section className="flex flex-col lg:flex-row justify-between w-full  px-4 mb-4 lg:mb-0 lg:px-0 gap-10 lg:gap-0 lg:items-end">
         <div className="flex flex-col gap-4 lg:gap-6 ">
           <h1 className="heading">Landscape</h1>
           <p className="body-sm lg:body">
@@ -176,28 +180,35 @@ export default function GlobalLayout({
           {(pathname === "/catalog" || pathname === "/list") && (
             <Search onSearch={handleSearch} initialValue={searchTerm} />
           )}
-          <div className="rounded-[64px] border border-black flex items-center overflow-hidden">
-            {Tabs.map((tab) => (
-              <Link
-                key={tab.id}
-                href={tab.href}
-                className={cx(
-                  "flex items-center gap-1 px-4 py-2 nth-[2]:border-x transition-all duration-300 border-black",
-                  {
-                    "bg-black text-white": pathname === tab.href,
-                  }
-                )}
-              >
-                <Icon
-                  name={
-                    `${tab.icon}${pathname === tab.href ? "White" : "Black"}` as IconName
-                  }
-                />
-                <p className="label-sm">{tab.name}</p>
-              </Link>
-            ))}
-          </div>
+          <TabSelector pathname={pathname} />
         </div>
+      </section>
+      <section className="lg:hidden relative px-4 flex items-center justify-between">
+        <MobileDrawer
+          numberActiveTags={numberActiveTags}
+          className={cx("transition-all duration-300", {
+            "opacity-0 pointer-events-none": isSearchOpen,
+          })}
+          pathname={pathname}
+        >
+          {tagsWithAll.map((tag) => (
+            <Tags
+              key={tag.id}
+              name={tag.name}
+              color={tag.color}
+              active={activeTags.includes(tag.id.toString())}
+              onClick={() => handleTagClick(tag.id.toString())}
+            />
+          ))}
+        </MobileDrawer>
+        {(pathname === "/catalog" || pathname === "/list") && (
+          <Search
+            onSearch={handleSearch}
+            initialValue={searchTerm}
+            isSearchOpen={isSearchOpen}
+            setIsSearchOpen={setIsSearchOpen}
+          />
+        )}
       </section>
       <GlobaleContext.Provider value={contextValue}>
         {children}
